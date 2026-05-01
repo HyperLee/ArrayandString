@@ -5,6 +5,46 @@ namespace ArrayandString.Tests;
 public class TutorialOutputTests
 {
     [Fact]
+    public void ProgramRun_PrintsMenuAndExitOption()
+    {
+        string output = CaptureProgramOutput("0\n");
+
+        Assert.Contains("章節列表", output);
+        Assert.Contains(" 1. Array 基本概念與 C# 範例", output);
+        Assert.Contains(" 6. 總結", output);
+        Assert.Contains(" 0. 結束程式", output);
+    }
+
+    [Fact]
+    public void ProgramRun_WithValidSelection_PrintsOnlySelectedSectionContent()
+    {
+        string output = CaptureProgramOutput("2\n\n0\n");
+
+        Assert.Contains("String 基本概念與 C# 範例", output);
+        Assert.Contains("不可變性示範", output);
+        Assert.DoesNotContain("一週銷售統計", output);
+        Assert.DoesNotContain("Minimum Window Substring", output);
+    }
+
+    [Fact]
+    public void ProgramRun_WithInvalidNumericSelection_ShowsValidationAndReturnsToMenu()
+    {
+        string output = CaptureProgramOutput("99\n0\n");
+
+        Assert.Contains("查無此章節，請重新輸入。", output);
+        Assert.True(CountOccurrences(output, "章節列表") >= 2);
+    }
+
+    [Fact]
+    public void ProgramRun_WithNonNumericSelection_ShowsValidationAndReturnsToMenu()
+    {
+        string output = CaptureProgramOutput("abc\n0\n");
+
+        Assert.Contains("請輸入有效的數字選項。", output);
+        Assert.True(CountOccurrences(output, "章節列表") >= 2);
+    }
+
+    [Fact]
     public void ArrayExamplesWriteSection_PrintsCoreTopics()
     {
         string output = CaptureOutput(ArrayExamples.WriteSection);
@@ -54,6 +94,25 @@ public class TutorialOutputTests
         Assert.Contains("建議練習順序", output);
     }
 
+    [Fact]
+    public void SummarySectionWriteSection_PrintsKeyTakeaways()
+    {
+        string output = CaptureOutput(SummarySection.WriteSection);
+
+        Assert.Contains("總結", output);
+        Assert.Contains("Array 適合固定長度", output);
+        Assert.Contains("String 專注於文字處理", output);
+    }
+
+    private static string CaptureProgramOutput(string input)
+    {
+        StringReader reader = new StringReader(input);
+        StringWriter writer = new StringWriter();
+
+        Program.Run(reader, writer);
+        return writer.ToString();
+    }
+
     private static string CaptureOutput(Action action)
     {
         StringWriter writer = new StringWriter();
@@ -68,6 +127,24 @@ public class TutorialOutputTests
         finally
         {
             Console.SetOut(originalWriter);
+        }
+    }
+
+    private static int CountOccurrences(string text, string value)
+    {
+        int count = 0;
+        int currentIndex = 0;
+
+        while (true)
+        {
+            int nextIndex = text.IndexOf(value, currentIndex, StringComparison.Ordinal);
+            if (nextIndex < 0)
+            {
+                return count;
+            }
+
+            count++;
+            currentIndex = nextIndex + value.Length;
         }
     }
 }

@@ -31,6 +31,11 @@ internal static class ConsoleRenderer
         Console.WriteLine($"- {text}");
     }
 
+    public static void WriteMenuOption(string key, string title)
+    {
+        Console.WriteLine($"{key,2}. {title}");
+    }
+
     public static void WriteCode(string code)
     {
         Console.WriteLine($"  {code}");
@@ -44,6 +49,16 @@ internal static class ConsoleRenderer
     public static void WriteNote(string text)
     {
         Console.WriteLine($"  說明: {text}");
+    }
+
+    public static void WriteMessage(string text)
+    {
+        Console.WriteLine(text);
+    }
+
+    public static void WritePrompt(string text)
+    {
+        Console.Write(text);
     }
 
     public static void WriteSpacer()

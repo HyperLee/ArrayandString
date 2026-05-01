@@ -18,13 +18,14 @@ dotnet restore ArrayandString.sln
 dotnet run --project ArrayandString/ArrayandString.csproj
 ```
 
-程式執行後，會依序輸出：
+程式執行後，會先顯示互動式章節選單，讓你輸入數字後只查看該主題內容。可選章節包含：
 
 - Array 基本概念與範例
 - String 基本概念與範例
 - Array 與 String 的共同點與差異
 - 常見錯誤與注意事項
 - LeetCode 練習建議
+- 總結
 
 ## 2. Array 基本概念
 
@@ -162,13 +163,16 @@ String 常見於：
 
 本專案的 Console 程式已依教學主題拆分，方便閱讀與維護：
 
-- `ArrayandString/Program.cs`：主程式入口，負責安排整體輸出順序
+- `ArrayandString/Program.cs`：主程式入口，負責啟動互動式章節選單
+- `ArrayandString/TutorialApplication.cs`：處理選單迴圈、輸入驗證與章節切換
+- `ArrayandString/TutorialSection.cs`：定義章節編號、標題與對應輸出動作
 - `ArrayandString/ConsoleRenderer.cs`：統一 Console 章節格式與結果顯示
 - `ArrayandString/Examples/ArrayExamples.cs`：Array 的概念、走訪、多維與實用操作
 - `ArrayandString/Examples/StringExamples.cs`：String 的索引、長度、串接、擷取與不可變性
 - `ArrayandString/Examples/ComparisonExamples.cs`：共同點、差異與使用時機比較
 - `ArrayandString/Examples/CommonPitfalls.cs`：常見錯誤示範
 - `ArrayandString/Examples/PracticeSuggestions.cs`：LeetCode 練習建議
+- `ArrayandString/Examples/SummarySection.cs`：整理學習重點，作為單獨可選的收尾章節
 
 閱讀方式建議如下：
 
